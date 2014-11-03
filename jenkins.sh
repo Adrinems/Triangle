@@ -1,16 +1,12 @@
-language: python
-python:
-  - "2.7"
+#! /bin/sh
 
-install: "pip install -r requirements.txt"
+pip install -r requirements.txt
+autopep8 -ir .
+flake8 --max-complexity=7 --exclude=*.txt,*.md --max-line-length=200 .
 
-before_script:
-  - autopep8 -ir *
-  - flake8 --max-complexity=7 --exclude=*.txt,*.md --max-line-length=200 *
-
-script:
-  - lettuce AcceptanceTest
-  - cd UnitTest
-  - python TestCase.py -v
-  - coverage run --branch TestCase.py
-  - coverage report -m
+lettuce AcceptanceTest
+cd UnitTest
+python TestCase.py -v
+coverage run --branch TestCase.py
+coverage report -m
+coverage html --title="Coverage about Triangle"
